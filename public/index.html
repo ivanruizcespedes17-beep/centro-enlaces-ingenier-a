@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Centro de Enlaces Ingeniería</title>
+<style>
+:root{--navy:#071b3a;--blue:#0b3d91;--yellow:#f7c600;--gold:#ffd83d;--bg:#f4f7fb;--text:#10233f;--muted:#61708a}
+*{box-sizing:border-box} body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.app{display:flex;min-height:100vh}.side{width:285px;background:var(--navy);color:white;padding:24px 18px;position:sticky;top:0;height:100vh}
+.brand{font-weight:900;font-size:20px;letter-spacing:.5px;margin-bottom:5px}.brand small{display:block;color:var(--gold);font-size:11px;margin-top:5px}
+.side h3{font-size:12px;color:#b9c6dc;letter-spacing:1px;margin:28px 10px 10px}.areas{display:grid;gap:7px}
+.area{border:0;background:transparent;color:white;text-align:left;padding:12px 12px;border-radius:10px;cursor:pointer;font-weight:700}.area:hover,.area.active{background:var(--yellow);color:var(--navy)}
+.main{flex:1;padding:30px 34px;max-width:1500px;margin:auto;width:100%}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.eyebrow{font-size:12px;color:var(--blue);font-weight:900;letter-spacing:1.5px}.title{font-size:34px;margin:4px 0;color:var(--navy)}.subtitle{color:var(--muted);margin:0 0 20px}
+.admin{background:var(--navy);color:white;border:0;padding:11px 16px;border-radius:10px;font-weight:800;cursor:pointer}.admin.on{background:var(--yellow);color:var(--navy)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.toolbar input,.toolbar select{border:1px solid #d4dce8;border-radius:10px;padding:11px 13px;background:white}.toolbar input{flex:1;min-width:220px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}.stat{background:white;border-radius:12px;padding:11px 15px;box-shadow:0 4px 16px #10233f10}.stat b{color:var(--blue);font-size:20px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:white;border:1px solid #e1e7ef;border-radius:14px;padding:15px;box-shadow:0 5px 18px #10233f12;min-height:145px;display:flex;flex-direction:column;justify-content:space-between}
+.card-top{display:flex;gap:11px;align-items:flex-start}.pin{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:20px;background:var(--accent,#f7c600);color:white;flex:none}.card h4{margin:1px 0;font-size:15px;line-height:1.25;color:var(--navy)}.tag{display:inline-block;margin-top:6px;font-size:10px;font-weight:900;padding:4px 7px;border-radius:99px;background:#eef3fb;color:var(--blue)}
+.open{margin-top:13px;text-decoration:none;background:var(--navy);color:white;text-align:center;border-radius:9px;padding:8px;font-size:12px;font-weight:900}.open:hover{background:var(--blue)}
+.editbox{display:none !important;margin-top:12px;padding-top:12px;border-top:1px solid #e6ebf2}.admin-mode .editbox{display:block !important}.editbox input,.editbox select{width:100%;margin:4px 0;padding:8px;border:1px solid #cfd8e6;border-radius:7px}.edit-actions{display:flex;gap:6px}.edit-actions button{flex:1;padding:7px;border:0;border-radius:7px;cursor:pointer;font-weight:800}.save{background:var(--yellow)}.del{background:#fee2e2;color:#991b1b}
+.adminbar{display:none;background:#fff8d9;border:1px solid #f1d86a;padding:12px;border-radius:10px;margin-bottom:16px;gap:8px;flex-wrap:wrap}.admin-mode .adminbar{display:flex}.adminbar button{border:0;border-radius:8px;padding:8px 11px;font-weight:800;cursor:pointer}.add{background:var(--blue);color:white}.saveall{background:var(--yellow);color:var(--navy)}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(7,27,58,.45);z-index:1000;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-box{width:min(520px,100%);background:#fff;border-radius:16px;padding:22px;box-shadow:0 20px 60px #071b3a40}.modal-box h2{margin:0 0 6px;color:var(--navy)}.modal-box p{margin:0 0 16px;color:var(--muted);font-size:13px}.modal-box label{display:block;font-size:12px;font-weight:900;color:var(--navy);margin:11px 0 5px}.modal-box input,.modal-box select{width:100%;padding:11px 12px;border:1px solid #cfd8e6;border-radius:9px;font-size:14px;background:#fff}.modal-actions{display:flex;gap:8px;margin-top:18px}.modal-actions button{flex:1;padding:11px;border:0;border-radius:9px;font-weight:900;cursor:pointer}.modal-save{background:var(--yellow);color:var(--navy)}.modal-cancel{background:#e9eef5;color:var(--navy)}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.side{width:235px}}
+@media(max-width:800px){.app{display:block}.side{position:relative;width:100%;height:auto}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.main{padding:20px}.title{font-size:27px}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+</style>
+
+<style>
+
+/* ===== NUEVO DISEÑO CORPORATIVO ===== */
+
+:root{
+    --navy:#071b3a;
+    --navy-2:#0b2550;
+    --blue:#0b3d91;
+    --yellow:#f7c600;
+    --yellow-soft:#fff8d8;
+    --bg:#f3f6fa;
+    --white:#ffffff;
+    --text:#14213d;
+    --muted:#64748b;
+    --border:#e2e8f0;
+    --shadow:0 8px 24px rgba(7,27,58,.08);
+    --shadow-hover:0 14px 32px rgba(7,27,58,.14);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#f7f5ef;
+    color:var(--text);
+}
+
+/* ===== ESTRUCTURA ===== */
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ===== BARRA LATERAL ===== */
+
+.side{
+    width:255px;
+    min-height:100vh;
+    position:sticky;
+    top:0;
+    background:linear-gradient(180deg,#101820 0%,#18252f 100%);
+    color:white;
+    padding:28px 20px;
+    box-shadow:8px 0 24px rgba(7,27,58,.08);
+    z-index:10;
+}
+
+.brand{
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:1px;
+    padding:4px 10px 26px;
+    border-bottom:1px solid rgba(255,255,255,.12);
+}
+
+.brand small{
+    display:block;
+    margin-top:7px;
+    color:var(--yellow);
+    font-size:10px;
+    letter-spacing:1.5px;
+    font-weight:800;
+}
+
+.side h3{
+    margin:28px 10px 12px;
+    color:#aebed5;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+}
+
+.areas{
+    display:grid;
+    gap:6px;
+}
+
+.area{
+    border:0;
+    background:transparent;
+    color:#e8eef8;
+    text-align:left;
+    padding:12px 14px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:13px;
+    transition:.2s ease;
+}
+.area-count{
+    float:right;
+    min-width:30px;
+    height:26px;
+    padding:0 8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:20px;
+    background:rgba(255,255,255,.12);
+    color:#dbe5f2;
+    font-size:11px;
+    font-weight:900;
+}
+
+.area.active .area-count{
+    background:#101820;
+    color:#f7c600;
+}
+.area:hover{
+    background:rgba(255,255,255,.08);
+    color:white;
+    transform:translateX(2px);
+}
+
+.area.active{
+    background:linear-gradient(135deg,#f7c600 0%,#ffd83d 100%);
+    color:#101820;
+    box-shadow:0 6px 16px rgba(247,198,0,.25);
+}
+
+/* ===== CONTENIDO ===== */
+
+.main{
+    flex:1;
+    width:100%;
+    max-width:1600px;
+    margin:auto;
+    padding:34px 42px 50px;
+}
+
+/* ===== CABECERA ===== */
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    margin-bottom:28px;
+}
+
+.eyebrow{
+    color:#c99a00;
+    font-size:40px;
+    font-weight:1000;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:7px;
+}
+
+.title{
+    margin:0;
+    font-size:42px;
+    line-height:1.1;
+    letter-spacing:-1px;
+    color:var(--navy);
+    font-weight:900;
+}
+
+.subtitle{
+    margin:9px 0 0;
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* ===== ADMINISTRADOR ===== */
+
+.admin{
+    background:var(--navy);
+    color:white;
+    border:0;
+    padding:12px 18px;
+    border-radius:10px;
+    font-weight:800;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:.2s ease;
+}
+
+.admin:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(7,27,58,.18);
+}
+
+.admin.on{
+    background:var(--yellow);
+    color:var(--navy);
+}
+
+/* ===== BARRA DE HERRAMIENTAS ===== */
+
+.adminbar{
+    background:var(--yellow-soft);
+    border:1px solid #f1d95d;
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:18px;
+}
+
+.toolbar{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.toolbar input,
+.toolbar select{
+    border:1px solid var(--border);
+    background:white;
+    border-radius:11px;
+    padding:13px 15px;
+    font-size:14px;
+    outline:none;
+    transition:.2s ease;
+}
+
+.toolbar input{
+    flex:1;
+    min-width:240px;
+}
+
+.toolbar input:focus,
+.toolbar select:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(11,61,145,.08);
+}
+
+/* ===== BOTONES ===== */
+
+.add,
+.saveall{
+    border:0;
+    border-radius:10px;
+    padding:11px 16px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.add{
+    background:var(--blue);
+    color:white;
+}
+
+.saveall{
+    background:var(--yellow);
+    color:var(--navy);
+}
+
+.add:hover,
+.saveall:hover{
+    transform:translateY(-2px);
+    box-shadow:0 7px 16px rgba(7,27,58,.15);
+}
+
+/* ===== INDICADORES ===== */
+
+.stats{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+}
+
+.stat{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 18px;
+    box-shadow:var(--shadow);
+    min-width:150px;
+}
+
+.stat b{
+    color:var(--blue);
+    font-size:21px;
+    display:block;
+    margin-bottom:2px;
+}
+
+/* ===== TARJETAS ===== */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:18px;
+}
+
+.card{
+    background:#ffffff;
+    border:1px solid #27343d;
+    border-radius:10px;
+    padding:20px;
+    min-height:135px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    box-shadow:0 4px 18px rgba(16,24,32,.08);
+    transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow-hover);
+    border-color:#cbd5e1;
+}
+
+.card-top{
+    display:flex;
+    gap:13px;
+    align-items:flex-start;
+}
+
+.pin{
+    width:46px;
+    height:46px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    font-size:20px;
+    background:#eef4ff;
+    color:var(--blue);
+    flex:none;
+}
+
+.card h4{
+    margin:1px 0 0;
+    font-size:16px;
+    line-height:1.2;
+    color:#071b3a;
+    font-weight:900;
+}
+
+.tag{
+    display:inline-block;
+    margin-top:8px;
+    background:#eef4ff;
+    color:var(--blue);
+    border-radius:999px;
+    padding:5px 9px;
+    font-size:10px;
+    font-weight:900;
+}
+
+.open{
+    margin-top:13px;
+    text-decoration:none;
+    background:#f7c600;
+    color:#101820;
+    text-align:center;
+    border-radius:8px;
+    padding:10px 14px;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.3px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:max-content;
+    transition:.2s ease;
+}
+
+.open:hover{
+    background:#f7c600;
+    color:#101820;
+    transform:translateY(-2px);
+    box-shadow:0 5px 12px rgba(247,198,0,.25);
+}
+
+/* ===== EDICIÓN ADMIN ===== */
+
+.editbox{
+    display:none !important;
+}
+
+.admin-mode .editbox{
+    display:block !important;
+}
+
+.editbox input,
+.editbox select{
+    width:100%;
+    margin:5px 0;
+    padding:9px 10px;
+    border:1px solid var(--border);
+    border-radius:8px;
+}
+
+.edit-actions{
+    display:flex;
+    gap:7px;
+}
+
+.edit-actions button{
+    flex:1;
+    border:0;
+    border-radius:8px;
+    padding:8px;
+    cursor:pointer;
+    font-weight:800;
+}
+
+.save{
+    background:var(--yellow);
+}
+
+.del{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* ===== MODAL ===== */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(7,27,58,.58);
+    backdrop-filter:blur(4px);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:min(520px,100%);
+    background:white;
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 25px 60px rgba(7,27,58,.25);
+}
+
+.modal-box h2{
+    margin:0;
+    color:var(--navy);
+}
+
+.modal-box p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.modal-box label{
+    display:block;
+    margin:12px 0 6px;
+    font-size:12px;
+    font-weight:900;
+    color:var(--navy);
+}
+
+.modal-box input,
+.modal-box select{
+    width:100%;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    font-size:14px;
+}
+
+.modal-actions{
+    display:flex;
+    gap:9px;
+    margin-top:20px;
+}
+
+.modal-actions button{
+    flex:1;
+    padding:12px;
+    border:0;
+    border-radius:9px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.modal-save{
+    background:var(--yellow);
+    color:var(--navy);
+}
+
+.modal-cancel{
+    background:#e9eef5;
+    color:var(--navy);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:1100px){
+    .grid{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+
+    .side{
+        width:235px;
+    }
+}
+
+@media(max-width:800px){
+    .app{
+        display:block;
+    }
+
+    .side{
+        position:relative;
+        width:100%;
+        height:auto;
+        min-height:auto;
+    }
+
+    .main{
+        padding:24px 20px;
+    }
+
+    .grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .top{
+        flex-direction:column;
+    }
+}
+
+@media(max-width:520px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .title{
+        font-size:29px;
+    }
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side"><div class="brand">UTILITIES<small>BACKUS • AB INBEV</small></div><h3>ÁREAS</h3><div id="areas" class="areas"></div></aside>
+<main class="main">
+<div class="top"><div><div class="eyebrow">INGENIERÍA</div><h1 class="title">CENTRO DE ENLACES</h1><p class="subtitle">Acceso centralizado a herramientas y documentos de Ingeniería.</p></div><button id="adminBtn" class="admin">⚙ MODO ADMINISTRADOR</button></div>
+<div id="adminbar" class="adminbar"><span style="font-weight:800;color:#10233f;align-self:center">Modo administrador: puedes editar los campos directamente en cada tarjeta.</span><button class="add" onclick="addLink()">＋ AGREGAR ENLACE</button><button class="saveall" onclick="saveAll()">💾 GUARDAR EN EXCEL</button><button onclick="location.reload()">↻ RECARGAR DATOS</button></div>
+<div class="toolbar"><input id="search" placeholder="Buscar enlace..." oninput="render()"><select id="sort" onchange="render()"><option value="name">Ordenar por nombre</option><option value="area">Ordenar por área</option></select></div>
+<div id="stats" class="stats"></div><section id="grid" class="grid"></section>
+</main></div>
+<div id="newModal" class="modal">
+ <form class="modal-box" id="newForm">
+  <h2>Agregar nuevo enlace</h2>
+  <p>Completa los datos y guarda. El enlace se escribirá directamente en el Excel.</p>
+  <label for="newName">Nombre del enlace</label>
+  <input id="newName" placeholder="Ej.: INVENTARIO DE BOMBAS" autocomplete="off" required>
+  <label for="newArea">Área</label>
+  <select id="newArea"><option>SEGURIDAD</option><option>INVENTARIOS</option><option>PSM</option><option>MATRICES CERO EXPOSICION</option></select>
+  <label for="newUrl">URL</label>
+  <input id="newUrl" placeholder="https://..." autocomplete="off" required>
+  <div class="modal-actions"><button type="button" class="modal-cancel" id="cancelNew">Cancelar</button><button type="submit" class="modal-save" id="saveNewBtn">Guardar enlace</button></div>
+ </form>
+</div>
+<script>
+let links=[], currentArea="TODOS", admin=false;
+const colors=["#f7c600","#0b3d91","#f59e0b","#0f766e","#7c3aed","#dc2626","#2563eb","#0891b2","#ca8a04","#db2777","#16a34a","#9333ea"];
+const $=id=>document.getElementById(id);
+async function load(){
+ try{
+  let r=await fetch("/api/links",{cache:"no-store"});
+  let j=await r.json();
+  if(!r.ok || (!Array.isArray(j) && !Array.isArray(j.links))) {
+    throw new Error(j.error || "No se pudieron cargar los datos del Excel.");
+}
+
+links = Array.isArray(j) ? j : j.links;
+  links = Array.isArray(j) ? j : j.links;
+  buildAreas(); render();
+ }catch(e){
+  console.error(e);
+  $("stats").innerHTML=`<div class="stat" style="color:#991b1b"><b>ERROR</b> ${esc(e.message)}</div>`;
+  $("grid").innerHTML=`<div style="grid-column:1/-1;background:#fee2e2;border:1px solid #fecaca;color:#991b1b;padding:16px;border-radius:12px;font-weight:700">No se pudieron cargar los enlaces desde el Excel.<br><small>${esc(e.message)}</small></div>`;
+ }
+}
+function buildAreas(){
+
+    const conteos = {};
+
+    links.forEach(link => {
+        const area = link.area;
+        if(area){
+            conteos[area] = (conteos[area] || 0) + 1;
+        }
+    });
+
+    const areas = [
+        "TODOS",
+        ...new Set(
+            links
+                .map(x => x.area)
+                .filter(Boolean)
+        )
+    ];
+
+    $("areas").innerHTML = areas.map(area => {
+
+        const cantidad =
+            area === "TODOS"
+                ? links.length
+                : conteos[area] || 0;
+
+        return `
+            <button
+                class="area ${area === currentArea ? "active" : ""}"
+                onclick='currentArea=${JSON.stringify(area)};buildAreas();render()'
+            >
+                <span>${area}</span>
+                <b class="area-count">${cantidad}</b>
+            </button>
+        `;
+
+    }).join("");
+}
+function render(){
+ document.body.classList.toggle("admin-mode",admin);
+ let q=$("search").value.toLowerCase(), s=$("sort").value;
+ let arr=links.filter(x=>(currentArea=="TODOS"||x.area==currentArea)&&(`${x.name} ${x.area}`.toLowerCase().includes(q)));
+ arr.sort((a,b)=>(a[s]||"").localeCompare(b[s]||"","es"));
+ $("stats").innerHTML=`<div class="stat"><b>${arr.length}</b> enlaces visibles</div><div class="stat"><b>${links.length}</b> total</div><div class="stat"><b>${new Set(links.map(x=>x.area)).size}</b> áreas</div>`;
+ $("grid").innerHTML=arr.map((x)=>{let i=links.indexOf(x), c=colors[i%colors.length];return `<article class="card" style="--accent:${c}">
+ <div><div class="card-top"><div class="pin">📍</div><div><h4>${esc(x.name)||"SIN NOMBRE"}</h4><span class="tag">${esc(x.area)}</span></div></div>
+ <a class="open" href="${esc(x.url)}" target="_blank" rel="noopener">ABRIR ↗</a>
+ <div class="editbox"><input value="${esc(x.name)}" placeholder="Nombre" oninput="links[${i}].name=this.value"><select onchange="links[${i}].area=this.value">${["PSM","SEGURIDAD","INVENTARIOS","MATRICES CERO EXPOSICION"].map(a=>`<option ${a==x.area?"selected":""}>${a}</option>`).join("")}</select><input value="${esc(x.url)}" placeholder="URL" oninput="links[${i}].url=this.value"><div class="edit-actions"><button class="save" onclick="saveAll()">Guardar</button><button class="del" onclick="delLink(${i})">Eliminar</button></div></div>
+ </div></article>`}).join("")}
+function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function addLink(){
+ if(!admin){ admin=true; $("adminBtn").classList.add("on"); $("adminBtn").textContent="✓ ADMINISTRADOR ACTIVO"; render(); }
+ const suggested=currentArea==="TODOS"?"SEGURIDAD":currentArea;
+ $("newArea").value=["PSM","SEGURIDAD","INVENTARIOS","MATRICES CERO EXPOSICION"].includes(suggested)?suggested:"SEGURIDAD";
+ $("newName").value=""; $("newUrl").value="";
+ $("newModal").classList.add("show");
+ setTimeout(()=>$("newName").focus(),50);
+}
+function closeNewModal(){ $("newModal").classList.remove("show"); }
+async function saveNewLink(){
+ const name=$("newName").value.trim();
+ const area=$("newArea").value.trim();
+ const url=$("newUrl").value.trim();
+ if(!name){ alert("⚠ Escribe el NOMBRE del enlace."); $("newName").focus(); return; }
+ if(!url || url==="https://"){ alert("⚠ Escribe la URL del enlace."); $("newUrl").focus(); return; }
+ if(!/^https?:\/\//i.test(url)){ alert("⚠ La URL debe comenzar con http:// o https://"); $("newUrl").focus(); return; }
+ const btn=$("saveNewBtn"); btn.disabled=true; btn.textContent="Guardando...";
+ try{
+   const nueva={name,area,url};
+   const r=await fetch("/api/add",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(nueva),cache:"no-store"});
+   const j=await r.json();
+   if(!r.ok || !j.ok) throw new Error(j.error||"No se pudo guardar el nuevo enlace.");
+   closeNewModal();
+   await load();
+   alert("✓ Enlace agregado correctamente al Excel.\n\nTotal: "+j.count+" enlaces.");
+ }catch(e){
+   console.error(e);
+   alert("❌ No se pudo agregar el enlace.\n\n"+e.message);
+ }finally{ btn.disabled=false; btn.textContent="Guardar enlace"; }
+}
+
+function delLink(i){if(confirm("¿Eliminar este enlace?")){links.splice(i,1);render()}}
+async function saveAll(){
+ try{
+  const invalid=links.findIndex(x=>!String(x.name||"").trim()||!String(x.url||"").trim()||x.url.trim()==="https://");
+  if(invalid>=0){
+    alert("⚠ Completa el NOMBRE y la URL del enlace antes de guardar.");
+    return;
+  }
+  let r=await fetch("/api/links",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({links})});
+  let j=await r.json();
+  if(!r.ok || !j.ok) throw new Error(j.error||"No se pudo guardar.");
+  alert(`✓ Guardado directamente en el Excel.\n\n${j.count} enlaces guardados.`);
+  await load();
+ }catch(e){
+  alert("❌ No se pudo guardar en el Excel.\n\n"+e.message);
+ }
+}
+$("adminBtn").onclick=()=>{if(admin){admin=false;$("adminBtn").classList.remove("on");$("adminBtn").textContent="⚙ MODO ADMINISTRADOR";render();return;}const clave=prompt("Ingrese la clave de administrador:");if(clave==="2408"){admin=true;$("adminBtn").classList.add("on");$("adminBtn").textContent="✓ ADMINISTRADOR ACTIVO";render();}else if(clave!==null){alert("Clave incorrecta.");}};
+$("newForm").addEventListener("submit", e=>{e.preventDefault();saveNewLink()});
+$("cancelNew").addEventListener("click", closeNewModal);
+$("newModal").addEventListener("click", e=>{if(e.target.id==="newModal")closeNewModal()});
+load();
+</script>
+</body></html>

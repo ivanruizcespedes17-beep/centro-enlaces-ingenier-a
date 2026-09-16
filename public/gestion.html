@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Enlaces</title>
+
+    <style>
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            font-family:"Segoe UI",Arial,sans-serif;
+            background:#f7f5ef;
+            color:#071b3a;
+        }
+
+        .app{
+            display:flex;
+            min-height:100vh;
+        }
+
+        .side{
+            width:255px;
+            min-height:100vh;
+            background:linear-gradient(180deg,#101820 0%,#18252f 100%);
+            color:white;
+            padding:28px 20px;
+            position:sticky;
+            top:0;
+        }
+
+        .brand{
+            font-size:21px;
+            font-weight:900;
+            letter-spacing:1px;
+            padding:4px 10px 26px;
+            border-bottom:1px solid rgba(255,255,255,.12);
+        }
+
+        .brand small{
+            display:block;
+            color:#f7c600;
+            font-size:11px;
+            margin-top:7px;
+        }
+
+        .side-title{
+            font-size:12px;
+            color:#b9c6d6;
+            font-weight:900;
+            letter-spacing:2px;
+            margin:30px 10px 12px;
+        }
+
+        .menu{
+            display:flex;
+            flex-direction:column;
+            gap:6px;
+        }
+
+        .menu a{
+            color:white;
+            text-decoration:none;
+            padding:12px 14px;
+            border-radius:9px;
+            font-weight:800;
+            font-size:13px;
+        }
+
+        .menu a:hover{
+            background:rgba(255,255,255,.08);
+        }
+
+        .menu a.active{
+            background:#f7c600;
+            color:#101820;
+            box-shadow:0 6px 16px rgba(247,198,0,.25);
+        }
+
+        .main{
+            flex:1;
+            padding:38px 42px;
+            max-width:1500px;
+            margin:auto;
+            width:100%;
+        }
+
+        .eyebrow{
+            color:#c99a00;
+            font-size:13px;
+            font-weight:900;
+            letter-spacing:2px;
+            text-transform:uppercase;
+        }
+
+        h1{
+            margin:5px 0 8px;
+            font-size:40px;
+            line-height:1.1;
+            font-weight:900;
+        }
+
+        .subtitle{
+            color:#61708a;
+            font-size:14px;
+            margin-bottom:28px;
+        }
+
+        .top{
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            gap:20px;
+        }
+
+        .admin{
+            background:#071b3a;
+            color:white;
+            border:0;
+            padding:12px 18px;
+            border-radius:9px;
+            font-weight:900;
+        }
+
+        .toolbar{
+            background:white;
+            border:1px solid #e7e2d7;
+            border-radius:14px;
+            padding:16px;
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+            margin-bottom:22px;
+        }
+
+        .toolbar input,
+        .toolbar select{
+            flex:1;
+            min-width:220px;
+            padding:12px 14px;
+            border:1px solid #d9dee6;
+            border-radius:9px;
+            font-size:14px;
+            outline:none;
+        }
+
+        .btn{
+            border:0;
+            border-radius:9px;
+            padding:12px 18px;
+            font-weight:900;
+            cursor:pointer;
+        }
+
+        .btn-yellow{
+            background:#f7c600;
+            color:#101820;
+        }
+
+        .stats{
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+            margin-bottom:22px;
+        }
+
+        .stat{
+            background:white;
+            border:1px solid #e7e2d7;
+            border-radius:12px;
+            padding:14px 20px;
+            min-width:150px;
+        }
+
+        .stat strong{
+            display:block;
+            font-size:24px;
+            color:#071b3a;
+        }
+
+        .stat span{
+            font-size:13px;
+            color:#61708a;
+        }
+
+        .panel{
+            background:white;
+            border:1px solid #e7e2d7;
+            border-radius:14px;
+            overflow:hidden;
+        }
+
+        .panel-header{
+            padding:18px 20px;
+            border-bottom:1px solid #e7e2d7;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .panel-header h2{
+            margin:0;
+            font-size:17px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th{
+            background:#101820;
+            color:white;
+            text-align:left;
+            padding:13px 16px;
+            font-size:12px;
+            text-transform:uppercase;
+            letter-spacing:.5px;
+        }
+
+        td{
+            padding:14px 16px;
+            border-bottom:1px solid #edf0f3;
+            font-size:13px;
+        }
+
+        tr:hover td{
+            background:#fffaf0;
+        }
+
+        .status{
+            display:inline-block;
+            padding:5px 9px;
+            border-radius:20px;
+            font-size:11px;
+            font-weight:900;
+        }
+
+        .activo{
+            background:#e8f6ed;
+            color:#19733c;
+        }
+
+        .revision{
+            background:#fff3cd;
+            color:#8a6500;
+        }
+
+        .actions{
+            display:flex;
+            gap:6px;
+        }
+
+        .edit{
+            background:#071b3a;
+            color:white;
+        }
+
+        .delete{
+            background:#fee8e8;
+            color:#a33;
+        }
+
+        @media(max-width:900px){
+            .side{
+                width:220px;
+            }
+
+            .main{
+                padding:25px;
+            }
+        }
+
+        @media(max-width:700px){
+            .app{
+                display:block;
+            }
+
+            .side{
+                width:100%;
+                min-height:auto;
+                position:relative;
+            }
+
+            .top{
+                flex-direction:column;
+            }
+
+            .panel{
+                overflow-x:auto;
+            }
+
+            table{
+                min-width:800px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="side">
+
+        <div class="brand">
+            UTILITIES
+            <small>BACKUS • AB INBEV</small>
+        </div>
+
+        <div class="side-title">PLATAFORMA</div>
+
+        <nav class="menu">
+            <a href="/">INICIO</a>
+            <a href="/gestion.html" class="active">GESTIÓN DE ENLACES</a>
+            <a href="#">CONTROL DE ENLACES</a>
+            <a href="#">DASHBOARD</a>
+        </nav>
+
+    </aside>
+
+    <main class="main">
+
+        <div class="top">
+
+            <div>
+                <div class="eyebrow">INGENIERÍA</div>
+
+                <h1>GESTIÓN DE ENLACES</h1>
+
+                <div class="subtitle">
+                    Administración y actualización de los accesos de Ingeniería.
+                </div>
+            </div>
+
+            <button class="admin">
+                ⚙ MODO ADMINISTRADOR
+            </button>
+
+        </div>
+
+        <div class="toolbar">
+
+            <input
+                type="text"
+                placeholder="Buscar enlace..."
+            >
+
+            <select>
+                <option>Todos los estados</option>
+                <option>Activo</option>
+                <option>Revisión</option>
+            </select>
+
+            <select>
+                <option>Todas las áreas</option>
+                <option>SEGURIDAD</option>
+                <option>INVENTARIOS</option>
+                <option>PSM</option>
+                <option>MATRICES CERO EXPOSICIÓN</option>
+            </select>
+
+            <button class="btn btn-yellow">
+                + NUEVO ENLACE
+            </button>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                <strong>31</strong>
+                <span>Total de enlaces</span>
+            </div>
+
+            <div class="stat">
+                <strong>29</strong>
+                <span>Enlaces activos</span>
+            </div>
+
+            <div class="stat">
+                <strong>2</strong>
+                <span>Por revisar</span>
+            </div>
+
+            <div class="stat">
+                <strong>4</strong>
+                <span>Áreas</span>
+            </div>
+
+        </div>
+
+        <section class="panel">
+
+            <div class="panel-header">
+                <h2>Base de enlaces</h2>
+
+                <button class="btn btn-yellow">
+                    EXPORTAR EXCEL
+                </button>
+            </div>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Enlace</th>
+                        <th>Área</th>
+                        <th>URL</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td><strong>3YP ESCALERAS</strong></td>
+                        <td>SEGURIDAD</td>
+                        <td>https://...</td>
+                        <td>
+                            <span class="status activo">ACTIVO</span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn edit">EDITAR</button>
+                                <button class="btn delete">ELIMINAR</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>INVENTARIO DE ESCALERAS</strong></td>
+                        <td>INVENTARIOS</td>
+                        <td>https://...</td>
+                        <td>
+                            <span class="status activo">ACTIVO</span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn edit">EDITAR</button>
+                                <button class="btn delete">ELIMINAR</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>CERTIFICADOS DE VÁLVULAS</strong></td>
+                        <td>PSM</td>
+                        <td>https://...</td>
+                        <td>
+                            <span class="status revision">REVISIÓN</span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn edit">EDITAR</button>
+                                <button class="btn delete">ELIMINAR</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>
